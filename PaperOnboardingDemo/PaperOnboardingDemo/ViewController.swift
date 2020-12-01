@@ -18,7 +18,7 @@ class ViewController: UIViewController {
                            description: "All hotels and hostels are sorted by hospitality rating",
                            pageIcon: Asset.key.image,
                            color: UIColor(red: 0.40, green: 0.56, blue: 0.71, alpha: 1.00),
-                           titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont),
+                           titleColor: UIColor.white, descriptionColor: UIColor.white, titleFont: titleFont, descriptionFont: descriptionFont, imageSideLength: 300),
         
         OnboardingItemInfo(informationImage: Asset.banks.image,
                            title: "Banks",

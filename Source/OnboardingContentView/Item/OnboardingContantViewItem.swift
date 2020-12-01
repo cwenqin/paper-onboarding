@@ -20,9 +20,9 @@ open class OnboardingContentViewItem: UIView {
     open var titleLabel: UILabel?
     open var descriptionLabel: UILabel?
 
-    init(titlePadding: CGFloat, descriptionPadding: CGFloat) {
+    init(titlePadding: CGFloat, descriptionPadding: CGFloat, imageSideLength: CGFloat) {
         super.init(frame: .zero)
-        commonInit(titlePadding: titlePadding, descriptionPadding: descriptionPadding)
+        commonInit(titlePadding: titlePadding, descriptionPadding: descriptionPadding, imageSideLength: imageSideLength)
     }
 
     public required init?(coder _: NSCoder) {
@@ -34,8 +34,8 @@ open class OnboardingContentViewItem: UIView {
 
 extension OnboardingContentViewItem {
 
-    class func itemOnView(_ view: UIView, titlePadding: CGFloat, descriptionPadding: CGFloat) -> OnboardingContentViewItem {
-        let item = Init(OnboardingContentViewItem(titlePadding: titlePadding, descriptionPadding: descriptionPadding)) {
+    class func itemOnView(_ view: UIView, titlePadding: CGFloat, descriptionPadding: CGFloat, imageSideLength: CGFloat) -> OnboardingContentViewItem {
+        let item = Init(OnboardingContentViewItem(titlePadding: titlePadding, descriptionPadding: descriptionPadding, imageSideLength: imageSideLength)) {
             $0.backgroundColor = .clear
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -72,11 +72,11 @@ extension OnboardingContentViewItem {
 
 private extension OnboardingContentViewItem {
 
-    func commonInit(titlePadding: CGFloat, descriptionPadding: CGFloat) {
+    func commonInit(titlePadding: CGFloat, descriptionPadding: CGFloat, imageSideLength: CGFloat) {
 
         let titleLabel = createTitleLabel(self, padding: titlePadding)
         let descriptionLabel = createDescriptionLabel(self, padding: descriptionPadding)
-        let imageView = createImage(self)
+        let imageView = createImage(self, sideLength: imageSideLength)
 
         // added constraints
         titleCenterConstraint = (self, titleLabel, imageView) >>>- {
@@ -164,9 +164,9 @@ private extension OnboardingContentViewItem {
         }
     }
 
-    func createImage(_ onView: UIView) -> UIImageView {
+    func createImage(_ onView: UIView, sideLength: CGFloat) -> UIImageView {
         let imageView = Init(UIImageView(frame: CGRect.zero)) {
-            $0.contentMode = .scaleAspectFit
+            $0.contentMode = .scaleAspectFill
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
 
@@ -175,20 +175,20 @@ private extension OnboardingContentViewItem {
         // add constratints
         informationImageWidthConstraint = imageView >>>- {
             $0.attribute = NSLayoutConstraint.Attribute.width
-            $0.constant = 188
+            $0.constant = sideLength
             return
         }
         
         informationImageHeightConstraint = imageView >>>- {
             $0.attribute = NSLayoutConstraint.Attribute.height
-            $0.constant = 188
+            $0.constant = sideLength
             return
         }
 
         for attribute in [NSLayoutConstraint.Attribute.centerX, NSLayoutConstraint.Attribute.top] {
             (onView, imageView) >>>- { $0.attribute = attribute; return }
         }
-
+        
         return imageView
     }
 }
